@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class Compilateur {
 
     public static void main(String[] args) throws IOException {
-        String fichier = new String(Files.readAllBytes(Paths.get("rpc/Result.java")));
+        String fichier = new String(Files.readAllBytes(Paths.get("rpc/Interface.java")));
 
         ArrayList<ArrayList<String>> res = trouveMethode(fichier);
         System.out.println(res);
@@ -33,7 +33,7 @@ public class Compilateur {
         for (String s : tabChaine) {
             ligne = new ArrayList<String>();
             //  selections                             (2)              (3)        (4)
-            pattern = Pattern.compile("^( )*public ([a-zA-Z0-9]+) ([a-zA-Z0-9]+)\\((.*)\\)(.*)\\{$");
+            pattern = Pattern.compile("^( )*public ([a-zA-Z0-9]+) ([a-zA-Z0-9]+)\\((.*)\\)(.*);$");
 
             matcher = pattern.matcher(s);
             while(matcher.find()) {
