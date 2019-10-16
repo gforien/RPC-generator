@@ -33,7 +33,7 @@ public class Matlab {
             oos.writeObject(m.calcul(dis.readInt()));
             oos.flush();
             System.out.println("reussi !");
-            Thread.sleep(10000);
+            Thread.sleep(5000);
         } else {
             System.out.println("pas reussi !");
         }
