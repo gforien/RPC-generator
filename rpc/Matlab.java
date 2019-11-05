@@ -1,4 +1,5 @@
 package rpc;
+
 public class Matlab {
     private int i;
 
@@ -20,7 +21,7 @@ public class Matlab {
         java.io.ObjectOutputStream oos = new java.io.ObjectOutputStream(s.getOutputStream());
 
         String fonction = dis.readUTF();
-        if (fonction.equals("constructeur")) {
+        if (fonction.equals("init")) {
             m = new Matlab(dis.readInt());
             System.out.println("reussi !");
         } else {

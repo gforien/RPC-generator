@@ -7,7 +7,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 
 // piege : le constructeur ne fait pas partie de l'interface
-// le constructeur qui prend des parametres c'est une connerie
+// le constructeur qui prend des parametres c'est une erreur
 // le constructeur devrait juste servicr à faire l'allocation mémoire, et pas à initialiser
 
 // sur des SYD, comme on ne maitrise ni la mémoire ni le temps, la responsabilité du cycle de vie
@@ -16,10 +16,11 @@ import java.util.ArrayList;
 public class Compilateur {
 
     public static void main(String[] args) throws IOException {
-        String fichier = new String(Files.readAllBytes(Paths.get("rpc/Interface.java")));
+        String fichier = new String(Files.readAllBytes(Paths.get("Interface.java")));
 
         ArrayList<ArrayList<String>> res = trouveMethode(fichier);
         System.out.println(res);
+
     }
 
     public static ArrayList<ArrayList<String>> trouveMethode(String chaine) {
