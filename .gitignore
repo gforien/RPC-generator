@@ -1,6 +1,5 @@
 rpc/CalculStub.java
 rpc/CalculSkeleton.java
-rpc/backup.txt
 
 # Compiled class file
 *.class

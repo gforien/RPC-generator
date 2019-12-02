@@ -1,0 +1,88 @@
+----------------------------------------------
+     Exemple de Stub correct
+----------------------------------------------
+package rpc;
+
+import java.net.*;
+import java.io.*;
+
+public class CalculStub implements CalculIfc {
+
+    public java.net.Socket s;
+    public java.io.DataOutputStream dos;
+    public java.io.ObjectInputStream ois;
+
+    public CalculStub() {
+        System.out.println("Stub:: constructeur");
+        try {
+            s = new java.net.Socket("localhost", 1234);
+            dos = new java.io.DataOutputStream(s.getOutputStream());
+            ois = new java.io.ObjectInputStream(s.getInputStream());
+        } catch (Exception e) {
+            throw new ExceptionInInitializerError(e);
+        }
+    }
+
+    public void init(int i) throws IOException {
+        System.out.println("Stub:: init");
+        dos.writeUTF("init");
+        dos.writeInt(i);
+        dos.flush();
+    }
+
+    public Result calcul(int i) throws ClassNotFoundException, IOException {
+        System.out.println("Stub:: calcul");
+        dos.writeUTF("calcul");
+        dos.writeInt(3);
+        dos.flush();
+
+        Result r = (Result)ois.readObject();
+        s.close();
+        return r;
+    }
+}
+
+
+/*
+
++"    public void init(int i) throws IOException {\n"
++"        System.out.println(\"Stub:: init\");\n"
++"        dos.writeUTF(\"init\");\n"
++"        dos.writeInt(i);\n"
++"        dos.flush();\n"
++"    }\n"
++"\n"
++"    public Result calcul(int i) throws ClassNotFoundException, IOException {\n"
++"        System.out.println(\"Stub:: calcul\");\n"
++"        dos.writeUTF(\"calcul\");\n"
++"        dos.writeInt(3);\n"
++"        dos.flush();\n"
++"\n"
++"        Result r = (Result)ois.readObject();\n"
++"        s.close();\n"
++"        return r;\n"
++"    }\n"
++"}\n";
+
+public static void execute(String cmd) throws IOException, InterruptedException {
+    final Process p = Runtime.getRuntime().exec("javac -verbose -cp rpc/ rpc/CalculStub.java");
+
+    new Thread(new Runnable() {
+        public void run() {
+         BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
+         String line = null; 
+
+         try {
+            while ((line = input.readLine()) != null)
+                System.out.println(line);
+         } catch (IOException e) {
+                e.printStackTrace();
+         }
+        }
+    }).start();
+
+    p.waitFor();
+    System.out.println("hey !");
+}
+
+*/
