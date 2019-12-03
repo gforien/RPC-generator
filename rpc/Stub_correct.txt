@@ -1,6 +1,6 @@
-----------------------------------------------
-     Exemple de Stub correct
-----------------------------------------------
+//----------------------------------------------
+//     Exemple de Stub correct
+//----------------------------------------------
 package rpc;
 
 import java.net.*;
@@ -23,6 +23,7 @@ public class CalculStub implements CalculIfc {
         }
     }
 
+    @Override
     public void init(int i) throws IOException {
         System.out.println("Stub:: init");
         dos.writeUTF("init");
@@ -30,6 +31,7 @@ public class CalculStub implements CalculIfc {
         dos.flush();
     }
 
+    @Override
     public Result calcul(int i) throws ClassNotFoundException, IOException {
         System.out.println("Stub:: calcul");
         dos.writeUTF("calcul");

@@ -1,0 +1,50 @@
+//----------------------------------------------
+//     Exemple de Skeleton correct
+//----------------------------------------------
+package rpc;
+
+import java.net.*;
+import java.io.*;
+
+public class CalculSkeleton {
+
+    public static void main(String [] arg) throws Exception {
+        ServerSocket server = new ServerSocket(1234);
+        Socket s = server.accept();
+        System.out.println("Stub connected");
+
+        ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
+        ObjectInputStream ois  = new ObjectInputStream(s.getInputStream());
+
+        Matlab m = new Matlab();
+        String fonction = ois.readUTF();
+
+        try {
+            while(true) {
+
+                switch (fonction) {
+                    default:
+                        System.out.println("ERREUR : fonction non reconnue");
+                        break;
+
+                    case "calcul":
+                        System.out.println("calcul");
+                        java.lang.Integer param1 = (java.lang.Integer)ois.readObject();
+                        oos.writeObject(m.calcul(param1));
+                        oos.flush();
+                        break;
+
+                    case "init":
+                        System.out.println("init");
+                        java.lang.Integer param2 = (java.lang.Integer)ois.readObject();
+                        m.init(param2);
+                        break;
+
+                }
+                fonction = ois.readUTF();
+            }
+        } catch (EOFException e) {
+            System.out.println("Connection closed.");
+        }
+    }
+}

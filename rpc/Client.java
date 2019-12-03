@@ -4,9 +4,10 @@ public class Client {
 
     public static void main(String [] arg) throws Exception {
 
-        CalculIfc s = new CalculStub();
-        s.init(10);
-        Result r = s.calcul(3);
+        CalculIfc stub = new CalculStub();
+        stub.init(10);
+        Result r = stub.calcul(3);
+        System.out.println(r);
     }
 
 }
