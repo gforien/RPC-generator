@@ -8,10 +8,14 @@
 
 ## Problèmes RPC
 :warning: Le constructeur ne fait pas partie de l'interface<br>
-le constructeur qui prend des parametres c'est une erreur<br>
-le constructeur devrait juste servir à faire l'allocation mémoire, et pas à initialiser<br>
+"Le constructeur qui prend des parametres c'est une erreur"<br>
+"Le constructeur devrait juste servir à faire l'allocation mémoire, et pas à initialiser"<br>
+"Sur des systèmes distribués, comme on ne maitrise ni la mémoire ni le temps, la responsabilité du cycle de vie de l'objet ne devrait pas revenir au Client"<br>
 
-Sur des systèmes distribués, comme on ne maitrise ni la mémoire ni le temps, la responsabilité du cycle de vie de l'objet ne devrait pas revenir au Client
+Pourquoi le Skeleton devrait implémenter l'interface ??<br>
+Le Stub implémente l'interface uniquement pour avoir la garantie que le Client peut appeler stub.methode (c'est une condition nécessaire pour compiler le Client)<br>
+Mais le Skeleton n'est pas concerné puisque c'est lui qui appelle Matlab ! Le Skeleton compilera toujours sans problème<br>
+À la limite si l'on veut suivre la même logique c'est Matlab qui devrait implémenter l'interface.
 
 ## Problèmes relatifs à Java
 - penser à ajouter le nom de package
@@ -26,8 +30,8 @@ Comment tous les envoyer ? L'interface ne doit pas utiliser de types primitifs.
 
 - Erreur assez bizarre :
 Si le Stub et le Skeleton créent tous les deux un inputStream d'abord et un outputStream ensuite :
-
+```java
     ObjectInputStream ois  = new ObjectInputStream(s.getInputStream());
     ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
+```
 Le fil d'exécution est bloqué ! (sans lever d'Exception ni rien, juste bloqué au moment de la création de l'inputStream)
-
