@@ -1,10 +1,36 @@
-# rpcgen
+# RPC-genenerator :pencil::twisted_rightwards_arrows::package:
+![SYD TD1](https://img.shields.io/static/v1.svg?label=SYD&message=TD1&color=2aaee6&style=flat)
+![License](https://img.shields.io/static/v1.svg?label=License&message=None&color=aaaaaa&style=flat)
 
-## :wrench: Tester le projet
+Un "compilateur" prend une interface quelconque et génère une architecture réseau Stub <-> Skeleton transparente pour le développeur.
+
+## :construction_worker: Tester le projet
+```sh
     ~/rpcgen/ $ make compilo
     ~/rpcgen/ $ make all
     ~/rpcgen/ $ java rpc.CalculSkeleton
     ~/rpcgen/ $ java rpc.Client
+```
+
+## :rocket: Créer sa propre interface
+:warning: Pour être correctement compilée, une nouvelle interface doit suivre ces règles :
+- faire partie du package **rpc**
+
+*Le fichier source se trouve dans rpc/ et sa première ligne est* `package rpc;`
+- les méthodes de l'interface sont forcément `public`
+- les méthodes de l'interface ne doivent ni recevoir ni renvoyer de types primitifs
+
+*Toutefois cela ne devrait pas poser de problème grâce à l'autoboxing et l'unboxing en Java*
+```java
+    public void maFonction(int param1, boolean param2, double param3);              // faux
+    public void maFonction(Integer param1, Boolean param2, Double param3);          // OK
+```
+- enfin il faut modifier les lignes 17 et 18 de **rpc/Compilateur.java**<br>
+*Par défaut ces lignes font référence à l'interface* **rpc.CalculIfc**
+```java
+17        String prefix = "Calcul";                                                 // à modifier
+18        String path   = "./rpc/Calcul";                                           // à modifier
+```
 
 ## Problèmes RPC
 :warning: Le constructeur ne fait pas partie de l'interface<br>
