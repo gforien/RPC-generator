@@ -17,6 +17,14 @@ Un "compilateur" prend une interface quelconque et génère une architecture ré
     ~/rpcgen/ $ make
 ```
 
+## Questions à poser
+- Est-ce que le Skeleton devrait implémenter l'interface ?
+- Est-ce que le service provider (Matlab) ne devrait pas implémenter l'interface ?
+- En fait à cause de l'asymétrie d'une connection TCP, l'interface est unidirectionnelle n'est-ce pas ?
+- Est-ce que la connection devrait rester ouverte ou pas ?
+- Si le Stub et le Skeleton créent tous les deux un inputStream d'abord et un outputStream ensuite, le programme est bloqué. Deadlock ? Pourquoi ?
+- A quel pourcentage du sujet suis-je arrivé ? Que reste-t-il pour le terminer ?
+
 ## Problèmes RPC
 *"Attention : le constructeur ne fait pas partie de l'interface"<br>
 "Le constructeur qui prend des parametres c'est une erreur"<br>
@@ -29,9 +37,6 @@ Mais le Skeleton n'est pas concerné puisque c'est lui qui appelle Matlab ! Le S
 À la limite si l'on veut suivre la même logique c'est Matlab qui devrait implémenter l'interface.
 
 ## Problèmes relatifs à Java
-- penser à ajouter le nom de package
-- ObjectStream vs. DataStream : on doit avoir un seul flux de données pour transmettre des données du Stub au Skeleton, mais on a des types primitifs et des objets<br>
-Comment tous les envoyer ? => L'interface ne doit pas utiliser de types primitifs.
 - l'interface n'est pas lue à la volée : elle doit être recompilée à chaque fois
 
 - la connection reste ouverte ou pas ? Différentes solutions<br>
