@@ -11,46 +11,12 @@ Un "compilateur" prend une interface quelconque et génère une architecture ré
 ```
 
 ## :rocket: Créer sa propre interface
+:warning: L'interface n'est pas lue à la volée : elle doit être recompilée à chaque fois
 ```sh
     ~/rpcgen/ $ javac rpc/HelloIfc.java
     ~/rpcgen/ $ java  rpc.Compilateur rpc/HelloIfc.java
     ~/rpcgen/ $ make
 ```
-
-## Questions à poser
-- Est-ce que le Skeleton devrait implémenter l'interface ?
-- Est-ce que le service provider (Matlab) ne devrait pas implémenter l'interface ?
-- En fait à cause de l'asymétrie d'une connection TCP, l'interface est unidirectionnelle n'est-ce pas ?
-- Est-ce que la connection devrait rester ouverte ou pas ?
-- Si le Stub et le Skeleton créent tous les deux un inputStream d'abord et un outputStream ensuite, le programme est bloqué. Deadlock ? Pourquoi ?
-- A quel pourcentage du sujet suis-je arrivé ? Que reste-t-il pour le terminer ?
-
-## Problèmes RPC
-*"Attention : le constructeur ne fait pas partie de l'interface"<br>
-"Le constructeur qui prend des parametres c'est une erreur"<br>
-"Le constructeur devrait juste servir à faire l'allocation mémoire, et pas à initialiser"<br>
-"Sur des systèmes distribués, comme on ne maitrise ni la mémoire ni le temps, la responsabilité du cycle de vie de l'objet ne devrait pas revenir au Client"<br>*
-
-Pourquoi le Skeleton devrait implémenter l'interface ??<br>
-Le Stub implémente l'interface uniquement pour avoir la garantie que le Client peut appeler stub.methode (c'est une condition nécessaire pour compiler le Client)<br>
-Mais le Skeleton n'est pas concerné puisque c'est lui qui appelle Matlab ! Le Skeleton compilera toujours sans problème<br>
-À la limite si l'on veut suivre la même logique c'est Matlab qui devrait implémenter l'interface.
-
-## Problèmes relatifs à Java
-- l'interface n'est pas lue à la volée : elle doit être recompilée à chaque fois
-
-- la connection reste ouverte ou pas ? Différentes solutions<br>
-1 - on crée une fonction close() que l'utilisateur doit appeler<br>
-2 - chaque méthode ouvre et ferme ses flux<br>
-3 - on silence les erreurs générées dans le Skeleton<br>
-
-- Erreur assez bizarre :
-Si le Stub et le Skeleton créent tous les deux un inputStream d'abord et un outputStream ensuite :
-```java
-    ObjectInputStream ois  = new ObjectInputStream(s.getInputStream());
-    ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
-```
-Le fil d'exécution est bloqué ! (sans lever d'Exception ni rien, juste bloqué au moment de la création de l'inputStream)
 
 ## Gérer les exceptions
 *Uniquement pour le Stub (le Skeleton n'a pas besoin d'implémenter l'interface).*
@@ -73,7 +39,7 @@ Toutes les méthodes qui reçoivent un résultat doivent le caster et peuvent pr
 Pour chaque méthode, le Stub définit les mêmes exceptions que l'interface, et dans chaque méthode on catch `IOException` et `ClassNotFoundException` qui ne dépendent pas du développeur.<br>
 => On ne laisse pas le développeur gérer lui même ses IOExceptions ou ClassNotFoundException, mais on le laisse gérer tout le reste.
 
-## Gérer les méthodes
+## Gérer les modifiers
 Uniquement pour le Stub (le Skeleton n'a pas besoin d'implémenter l'interface).
 On n'a pas besoin de vérifier la pertinence ou la logique : si l'interface est compilée, Java a déjà tout vérifié pour nous.
 
@@ -91,9 +57,3 @@ On n'a pas besoin de vérifier la pertinence ou la logique : si l'interface est 
 | INTERFACE     | x |
 | TRANSIENT     | uniquement pour variables |
 | VOLATILE      | uniquement pour variables |
-
-## Gérer les variables
-???
-
-## Gérer les attributs de l'interface
-???
